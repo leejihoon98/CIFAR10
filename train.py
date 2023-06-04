@@ -12,12 +12,14 @@ from albumentations.core.transforms_interface import ImageOnlyTransform
 from tqdm.auto import tqdm
 import warnings
 warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
+import matplotlib.pyplot as plt
+
 
 
 model_num = 6 
 total_epoch = 100 
 lr = 0.0001 
-
+batch_size = 16
 
 
 # class AugMix(ImageOnlyTransform):
@@ -152,13 +154,14 @@ for s in range(model_num):
 
     
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=16, shuffle=True, num_workers=16)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=16)
 
 
     
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=16)
-   
+
+    
     
     model = timm.create_model('resnet18', pretrained=True, num_classes=10)
     model = model.to(device)  
